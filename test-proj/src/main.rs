@@ -14,15 +14,11 @@ fn main() {
 }
 
 fn build_ui(app: &Application) {
-    let button = CustomButton::with_label("Press me!");
+    let button = CustomButton::new();
     button.set_margin_top(12);
     button.set_margin_bottom(12);
     button.set_margin_start(12);
     button.set_margin_end(12);
-
-    button.connect_clicked(move |button| {
-        button.set_label("Hello World!");
-    });
 
 
     let window = ApplicationWindow::builder()
