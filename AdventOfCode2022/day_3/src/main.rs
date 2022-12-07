@@ -39,28 +39,37 @@ fn part_2(filename: &str) {
     let mut buf: Vec<u8> = Vec::new();
     let mut sum: i32 = 0;
     let mut linebuf: Vec<&[u8]> = Vec::new();
+    let mut countlines = 0;
+    let mut count = 0;
 
     for line in lines {
-        if linebuf.len() < 2 {
-            linebuf.push(line.as_bytes());
-        } else {
-            for byte in *linebuf.get(0).expect("Couldn't get array 1") {
-                if linebuf.get(1).expect("Couldn't get array").contains(byte) {
-                    buf.push(*byte);
+        if !line.is_empty() {
+            if linebuf.len() < 2 {
+                linebuf.push(line.as_bytes());
+            } else {
+                for byte in *linebuf.get(0).expect("Couldn't get array 1") {
+                    if linebuf.get(1).expect("Couldn't get array").contains(byte) {
+                        buf.push(*byte);
+                    }
                 }
-            }
-            for byte in line.as_bytes() {
-                if buf.contains(byte) {
-                    println!("{}: {}", char::from(*byte), find_value(*byte));
-                    sum = sum
-                        .checked_add(find_value(*byte).into())
-                        .expect("Could not add");
+                for byte in line.as_bytes() {
+                    if buf.contains(byte) {
+                        println!("{}: {}", char::from(*byte), find_value(*byte));
+                        count += 1;
+                        sum = sum
+                            .checked_add(find_value(*byte).into())
+                            .expect("Could not add");
+                        break;
+                    }
                 }
+                buf.clear();
+                linebuf.clear();
             }
-            buf.clear();
-            linebuf.clear();
+            countlines += 1;
         }
     }
+    println!("{countlines}");
+    println!("{count}");
     println!("{sum}");
 }
 fn find_value(input: u8) -> u8 {
